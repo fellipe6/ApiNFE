@@ -121,7 +121,7 @@ public class DistribuicaoService {
 
             TEnvEvento enviEvento = ManifestacaoUtil.montaManifestacao(manifesta, configuracoesNfe);
             TRetEnvEvento retorno = Nfe.manifestacao(configuracoesNfe, enviEvento, false);
-            if(!retorno.getCStat().equals(StatusEnum.EVENTO_VINCULADO)){
+            if(!retorno.getRetEvento().get(0).getInfEvento().getCStat().equals(StatusEnum.EVENTO_VINCULADO)){
                 log.error("Erro ao manifestar Chave: " + chave + ": "+retorno.getCStat()+"-"+retorno.getXMotivo());
             }
         }

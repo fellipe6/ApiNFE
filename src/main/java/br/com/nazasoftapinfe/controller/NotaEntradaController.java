@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/notaEntrada")
+@RequestMapping("/api/v1/notaEntrada/")
 @Slf4j
 public class NotaEntradaController {
 
@@ -47,6 +47,27 @@ public class NotaEntradaController {
                 log.error("Erro ao listar empresas", e);
                 return  ResponseEntity.badRequest().body(e.getMessage());
             }
+
+    }
+
+    @GetMapping(value="xml/{id}")
+    public ResponseEntity<?> getXml(@PathVariable("id") Long idNotaEntrada) {
+        try {
+            return ResponseEntity.ok(notaEntradaService.getXml(idNotaEntrada));
+        } catch (Exception e) {
+            log.error("Erro ao listar empresas", e);
+            return  ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+    @GetMapping(value="chave/{chave}")
+    public ResponseEntity<?> getPorChave(@PathVariable("chave") String chave) {
+        try {
+            return ResponseEntity.ok(notaEntradaService.getPorChave(chave));
+        } catch (Exception e) {
+            log.error("Erro ao listar empresas", e);
+            return  ResponseEntity.badRequest().body(e.getMessage());
+        }
 
     }
 

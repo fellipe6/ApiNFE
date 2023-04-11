@@ -4,6 +4,7 @@ import br.com.nazasoftapinfe.entitiy.Empresa;
 import br.com.nazasoftapinfe.entitiy.NotaEntrada;
 import br.com.nazasoftapinfe.exception.IntegracaoException;
 import br.com.nazasoftapinfe.repository.NotaEntradaRepository;
+import br.com.nazasoftapinfe.util.ArquivoUtil;
 import br.com.swconsultoria.certificado.exception.CertificadoException;
 import br.com.swconsultoria.nfe.exception.NfeException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,14 @@ public class NotaEntradaService {
         return notaEntradaRepository.findById(idNota)
                 .orElseThrow(()-> new IntegracaoException("Nota não encontrada com o id: " + idNota));
     }
-
-
+    public String getXml(Long idNota) throws IOException {
+      NotaEntrada notaEntrada = listarPorID(idNota);
+      return ArquivoUtil.descompactaXml(notaEntrada.getXml());
     }
+
+    public NotaEntrada getPorChave(String chave) {
+        return notaEntradaRepository.findFirstByChave(chave)
+                .orElseThrow(()-> new IntegracaoException("Nota não encontrada com o chave: " + chave));
+    }
+}
 
