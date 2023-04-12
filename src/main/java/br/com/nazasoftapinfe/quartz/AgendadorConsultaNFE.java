@@ -16,7 +16,7 @@ public class AgendadorConsultaNFE {
     public AgendadorConsultaNFE(DistribuicaoService distribuicaoService) {
         this.distribuicaoService = distribuicaoService;
     }
-    @Scheduled(initialDelay =  1000*60*10,fixedDelay = 3600000)
+    @Scheduled(initialDelay=1000*60*10,fixedDelay=3600000)
     public void efetuaConsulta(){
         try {
             log.info("Iniciando a operação de consultas!");
