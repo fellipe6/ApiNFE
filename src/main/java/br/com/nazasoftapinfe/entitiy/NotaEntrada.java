@@ -7,7 +7,10 @@ import lombok.Generated;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name="nota_entrada")
@@ -26,6 +29,11 @@ public class NotaEntrada {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private byte[]xml;
 
+    private String serie;
+
+    private String numeroNota;
+
+    private String dtEmit;
     @ManyToOne
     @JoinColumn(name="empresa_id")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

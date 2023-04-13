@@ -62,7 +62,7 @@ public class DistribuicaoService {
                     ConsultaDFeEnum.NSU, ObjetoUtil.verifica(empresa.getNsu()).orElse("000000000000000"));
             if (!retorno.getCStat().equals(StatusEnum.DOC_LOCALIZADO_PARA_DESTINATARIO.getCodigo())) {
                 if (retorno.getCStat().equals(StatusEnum.CONSUMO_INDEVIDO.getCodigo())) {
-                break;
+                    break;
                 } else {
                     throw new IntegracaoException("Erro ao pesquisar notas!" + retorno.getCStat() + "--" + retorno.getXMotivo());
                 }
@@ -72,9 +72,9 @@ public class DistribuicaoService {
             existeMais = !retorno.getUltNSU().equals(retorno.getMaxNSU());
             empresa.setNsu(retorno.getUltNSU());
         }
-            empresaRepository.save(empresa);
-            notaEntradaService.salvar(listasNotasSalvar);
-            manifestaListaNotas(listaNotasManifestar,empresa,configuracao);
+        empresaRepository.save(empresa);
+        notaEntradaService.salvar(listasNotasSalvar);
+        manifestaListaNotas(listaNotasManifestar,empresa,configuracao);
     }
 
     private void populaLista(Empresa empresa, List<String> listaNotasManifestar, List<NotaEntrada> listasNotasSalvar, RetDistDFeInt retorno) throws JAXBException, IOException {
@@ -100,6 +100,9 @@ public class DistribuicaoService {
                     notaEntrada.setCnpjEmitente(nfe.getNFe().getInfNFe().getEmit().getCNPJ());
                     notaEntrada.setNomeEmitente(nfe.getNFe().getInfNFe().getEmit().getXNome());
                     notaEntrada.setValor(new BigDecimal(nfe.getNFe().getInfNFe().getTotal().getICMSTot().getVNF()));
+                    notaEntrada.setSerie(nfe.getNFe().getInfNFe().getIde().getSerie());
+                    notaEntrada.setNumeroNota(nfe.getNFe().getInfNFe().getIde().getNNF());
+                    notaEntrada.setDtEmit(nfe.getNFe().getInfNFe().getIde().getDhEmi());
                     notaEntrada.setXml(ArquivoUtil.compactaXml(xml));
                     listasNotasSalvar.add(notaEntrada);
                 default:
@@ -121,7 +124,8 @@ public class DistribuicaoService {
 
             TEnvEvento enviEvento = ManifestacaoUtil.montaManifestacao(manifesta, configuracoesNfe);
             TRetEnvEvento retorno = Nfe.manifestacao(configuracoesNfe, enviEvento, false);
-            if(!retorno.getRetEvento().get(0).getInfEvento().getCStat().equals(StatusEnum.EVENTO_VINCULADO)){
+            if(!retorno.getRetEvento().get(0).getInfEvento().getCStat().equals(StatusEnum.EVENTO_VINCULADO.getCodigo())){
+            //if(!retorno.getCStat().equals(StatusEnum.EVENTO_VINCULADO)){
                 log.error("Erro ao manifestar Chave: " + chave + ": "+retorno.getCStat()+"-"+retorno.getXMotivo());
             }
         }
