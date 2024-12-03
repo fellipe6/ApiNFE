@@ -20,10 +20,17 @@ public class Empresa {
     private String razaoSocial;
     @Enumerated(EnumType.STRING)
     private AmbienteEnum ambiente;
+   /* Para usar com SQL SERVER
+   @Lob
+    @Column(name = "certificado", nullable = false, columnDefinition = "VARBINARY(MAX)")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private byte[] certificado;
+    */
+   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+   private byte[] certificado;
     private String senhaCertificado;
     private String nsu;
     private String uf;
+
 
 }

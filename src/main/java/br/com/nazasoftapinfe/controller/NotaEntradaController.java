@@ -25,11 +25,11 @@ public class NotaEntradaController {
             distribuicaoService.consultaNotas();
             return ResponseEntity.ok(listarNotas());
         } catch (Exception e) {
+
             log.error("Erro ao listar empresas ", e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @GetMapping
     public ResponseEntity<?> listarNotas() {
         try {
@@ -50,10 +50,10 @@ public class NotaEntradaController {
 
     }
 
-    @GetMapping(value="xml/{id}")
-    public ResponseEntity<?> getXml(@PathVariable("id") Long idNotaEntrada) {
+    @GetMapping(value="xml/{chave}")
+    public ResponseEntity<?> getXml(@PathVariable("chave") String chave) {
         try {
-            return ResponseEntity.ok(notaEntradaService.getXml(idNotaEntrada));
+            return ResponseEntity.ok(notaEntradaService.getXml(chave));
         } catch (Exception e) {
             log.error("Erro ao listar empresas", e);
             return  ResponseEntity.badRequest().body(e.getMessage());

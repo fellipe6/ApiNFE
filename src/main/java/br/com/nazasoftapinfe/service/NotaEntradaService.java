@@ -1,12 +1,10 @@
 package br.com.nazasoftapinfe.service;
 
-import br.com.nazasoftapinfe.entitiy.Empresa;
 import br.com.nazasoftapinfe.entitiy.NotaEntrada;
 import br.com.nazasoftapinfe.exception.IntegracaoException;
 import br.com.nazasoftapinfe.repository.NotaEntradaRepository;
 import br.com.nazasoftapinfe.util.ArquivoUtil;
-import br.com.swconsultoria.certificado.exception.CertificadoException;
-import br.com.swconsultoria.nfe.exception.NfeException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +34,28 @@ public class NotaEntradaService {
         return notaEntradaRepository.findById(idNota)
                 .orElseThrow(()-> new IntegracaoException("Nota não encontrada com o id: " + idNota));
     }
-    public String getXml(Long idNota) throws IOException {
-      NotaEntrada notaEntrada = listarPorID(idNota);
+    public NotaEntrada listarPorChave(String chave){
+        return notaEntradaRepository.findFirstByChave(chave)
+                .orElseThrow(()-> new IntegracaoException("Nota não encontrada com a chave: " + chave));
+    }
+
+    public String getXml(String chave) throws IOException {
+      NotaEntrada notaEntrada = listarPorChave(chave);
       return ArquivoUtil.descompactaXml(notaEntrada.getXml());
+    }
+
+
+    //todo Fazer a impressão da NFE
+    public String geraImpressao(Long idNota) throws IOException {
+        NotaEntrada notaEntrada = listarPorID(idNota);
+        ArquivoUtil.descompactaXml(notaEntrada.getXml());
+        return ArquivoUtil.descompactaXml(notaEntrada.getXml());
     }
 
     public NotaEntrada getPorChave(String chave) {
         return notaEntradaRepository.findFirstByChave(chave)
                 .orElseThrow(()-> new IntegracaoException("Nota não encontrada com o chave: " + chave));
     }
+
 }
 

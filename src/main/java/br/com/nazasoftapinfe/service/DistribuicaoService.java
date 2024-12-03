@@ -1,9 +1,12 @@
 package br.com.nazasoftapinfe.service;
 
+import br.com.nazasoftapinfe.entitiy.Emit;
 import br.com.nazasoftapinfe.entitiy.Empresa;
+import br.com.nazasoftapinfe.entitiy.Fornecedor;
 import br.com.nazasoftapinfe.entitiy.NotaEntrada;
 import br.com.nazasoftapinfe.exception.IntegracaoException;
 import br.com.nazasoftapinfe.repository.EmpresaRepository;
+import br.com.nazasoftapinfe.repository.FornecedorRepository;
 import br.com.nazasoftapinfe.util.ArquivoUtil;
 import br.com.swconsultoria.certificado.Certificado;
 import br.com.swconsultoria.certificado.CertificadoService;
@@ -37,10 +40,12 @@ public class DistribuicaoService {
 
     private final EmpresaRepository empresaRepository;
     private final NotaEntradaService notaEntradaService;
+    private final FornecedorService fornecedorService;
 
-    public DistribuicaoService(EmpresaRepository empresaRepository, NotaEntradaService notaEntradaService) {
+    public DistribuicaoService(EmpresaRepository empresaRepository, NotaEntradaService notaEntradaService, FornecedorService fornecedorService) {
         this.empresaRepository = empresaRepository;
         this.notaEntradaService = notaEntradaService;
+        this.fornecedorService = fornecedorService;
     }
 
     public void consultaNotas() throws CertificadoException, NfeException, IOException, JAXBException {
@@ -94,17 +99,39 @@ public class DistribuicaoService {
                 case "procNFe_v4.00.xsd":
                     TNfeProc nfe = XmlNfeUtil.xmlToObject(xml, TNfeProc.class);
                     NotaEntrada notaEntrada = new NotaEntrada();
+                    Fornecedor fornecedor = new Fornecedor();
+                    Emit emit = new Emit();
                     notaEntrada.setChave(nfe.getNFe().getInfNFe().getId().substring(3));
                     notaEntrada.setEmpresa(empresa);
-                    notaEntrada.setSchema(doc.getSchema());
+                    //notaEntrada.setSchema(doc.getSchema());
+                    notaEntrada.setDoc_schema(doc.getSchema());
                     notaEntrada.setCnpjEmitente(nfe.getNFe().getInfNFe().getEmit().getCNPJ());
                     notaEntrada.setNomeEmitente(nfe.getNFe().getInfNFe().getEmit().getXNome());
                     notaEntrada.setValor(new BigDecimal(nfe.getNFe().getInfNFe().getTotal().getICMSTot().getVNF()));
                     notaEntrada.setSerie(nfe.getNFe().getInfNFe().getIde().getSerie());
                     notaEntrada.setNumeroNota(nfe.getNFe().getInfNFe().getIde().getNNF());
                     notaEntrada.setDtEmit(nfe.getNFe().getInfNFe().getIde().getDhEmi());
+                    notaEntrada.setXmlStr(xml);
                     notaEntrada.setXml(ArquivoUtil.compactaXml(xml));
+                    //Fornecedor
+                    fornecedor.setCnpj(nfe.getNFe().getInfNFe().getEmit().getCNPJ());
+                    fornecedor.setNome(nfe.getNFe().getInfNFe().getEmit().getXNome());
+                    fornecedor.setLogradouro(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXLgr());
+                    fornecedor.setNumero(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getNro());
+                    fornecedor.setXCpl(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXCpl());
+                    fornecedor.setXBairro(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXBairro());
+                    fornecedor.setCMun(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getCMun());
+                    fornecedor.setXMun(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXMun());
+                    fornecedor.setUF(String.valueOf(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getUF()));
+                    fornecedor.setCEP(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getCEP());
+                    fornecedor.setCPais(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getCPais());
+                    fornecedor.setXPais(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXPais());
+                    fornecedor.setIE(nfe.getNFe().getInfNFe().getEmit().getIE());
+                    fornecedor.setCrt(nfe.getNFe().getInfNFe().getEmit().getCRT());
+
                     listasNotasSalvar.add(notaEntrada);
+                    fornecedorService.cadastrarFornecedor(
+                            fornecedor);
                 default:
                     break;
             }
