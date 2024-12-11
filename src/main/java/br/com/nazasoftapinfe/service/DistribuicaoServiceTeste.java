@@ -1,8 +1,12 @@
 package br.com.nazasoftapinfe.service;
 
-import br.com.nazasoftapinfe.entitiy.*;
+import br.com.nazasoftapinfe.entitiy.Empresa;
+import br.com.nazasoftapinfe.entitiy.Fornecedor;
+import br.com.nazasoftapinfe.entitiy.NotaEntrada;
+import br.com.nazasoftapinfe.entitiy.Produto;
 import br.com.nazasoftapinfe.exception.IntegracaoException;
 import br.com.nazasoftapinfe.repository.EmpresaRepository;
+import br.com.nazasoftapinfe.repository.ProdutoRepository;
 import br.com.nazasoftapinfe.util.ArquivoUtil;
 import br.com.swconsultoria.certificado.Certificado;
 import br.com.swconsultoria.certificado.CertificadoService;
@@ -30,22 +34,24 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
-public class DistribuicaoService {
+public class DistribuicaoServiceTeste {
 
     private final EmpresaRepository empresaRepository;
     private final NotaEntradaService notaEntradaService;
     private final FornecedorService fornecedorService;
     private final ProdutoService produtoService;
 
-    public DistribuicaoService(EmpresaRepository empresaRepository, NotaEntradaService notaEntradaService, FornecedorService fornecedorService, ProdutoService produtoService) {
+    public DistribuicaoServiceTeste(EmpresaRepository empresaRepository, NotaEntradaService notaEntradaService, FornecedorService fornecedorService, ProdutoRepository produtoRepository, ProdutoService produtoService) {
         this.empresaRepository = empresaRepository;
         this.notaEntradaService = notaEntradaService;
         this.fornecedorService = fornecedorService;
-
         this.produtoService = produtoService;
+
+       // this.produtoRepository = produtoRepository;
     }
 
     public void consultaNotas() throws CertificadoException, NfeException, IOException, JAXBException {
@@ -130,58 +136,22 @@ public class DistribuicaoService {
                     fornecedor.setXPais(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXPais());
                     fornecedor.setIE(nfe.getNFe().getInfNFe().getEmit().getIE());
                     fornecedor.setCrt(nfe.getNFe().getInfNFe().getEmit().getCRT());
-
-                    //produtos
-
+                    //
+                    Produto produto = new Produto();
                     List<TNFe.InfNFe.Det> det = nfe.getNFe().getInfNFe().getDet();
-
                     if (det != null && !det.isEmpty()) {
-                        for (TNFe.InfNFe.Det detalhe : det) {
-                            if (detalhe != null && detalhe.getProd() != null) {
-                                Produto produto = new Produto();
-                                produto.setCProd(detalhe.getProd().getCProd());
-                                produto.setCEAN(detalhe.getProd().getCEAN());
-                                produto.setChave(nfe.getNFe().getInfNFe().getId().substring(3));
-                                produto.setVProd(new BigDecimal(detalhe.getProd().getVProd())); // Corrigido: campo correto para valor do produto.
-                                produto.setXProd(detalhe.getProd().getXProd());
-                                produto.setCest(detalhe.getProd().getCEST());
-                                produto.setCfop(detalhe.getProd().getCFOP());
-                                produto.setUcom(detalhe.getProd().getUCom());
-                                produto.setQcom(detalhe.getProd().getQCom());
-                                produto.setVUnCom(detalhe.getProd().getVUnCom());
-                                produto.setCEANTrib(detalhe.getProd().getCEANTrib());
-                                produto.setUTrib(detalhe.getProd().getUTrib());
-                                produto.setQTrib(detalhe.getProd().getQTrib());
-                                produto.setVUnCom(detalhe.getProd().getVUnCom());
-                                produto.setNcm(detalhe.getProd().getNCM());
-                                // Verificar se a lista Rastro não é nula e contém elementos
-                                if (detalhe.getProd().getRastro() != null && !detalhe.getProd().getRastro().isEmpty()) {
-                                    produto.setNLote(detalhe.getProd().getRastro().get(0).getNLote());
-                                    produto.setQLote(detalhe.getProd().getRastro().get(0).getQLote());
-                                    produto.setDFab(detalhe.getProd().getRastro().get(0).getDFab());
-                                    produto.setDVal(detalhe.getProd().getRastro().get(0).getDVal());
-                                } else {
-                                    System.err.println("Rastro nulo ou vazio no produto: " + detalhe.getProd().getCProd());
-                                }
+                        produto.setCProd(det.get(0).getProd().getCProd());
+                        produto.setCEAN(det.get(0).getProd().getCEAN());
+                        produto.setChave(det.get(0).getProd().getCProd());
+                        produto.setXProd(det.get(0).getProd().getXProd());
+                        produtoService.salvarProduto(produto);
 
-                                try {
-                                    // Salvar o produto no serviço
-                                    produtoService.salvarProduto(produto);
-                                } catch (Exception e) {
-                                    System.err.println("Erro ao salvar o produto: " + e.getMessage());
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                System.err.println("Detalhe ou produto nulo encontrado.");
-                            }
-                        }
                     } else {
-                        System.err.println("Lista de detalhes nula ou vazia.");
+                        // Trate o caso onde a lista está vazia ou nula
                     }
 
                     //produto.setCProd(nfe.getNFe().getInfNFe().getDet().get(0).getProd().getCProd());
-                    //  produto.setCProd(nfe.getVersao());*/
-
+                  //  produto.setCProd(nfe.getVersao());*/
                     listasNotasSalvar.add(notaEntrada);
                     listasFornecedor.add(fornecedor);
 
@@ -205,7 +175,7 @@ public class DistribuicaoService {
             TEnvEvento enviEvento = ManifestacaoUtil.montaManifestacao(manifesta, configuracoesNfe);
             TRetEnvEvento retorno = Nfe.manifestacao(configuracoesNfe, enviEvento, false);
             if(!retorno.getRetEvento().get(0).getInfEvento().getCStat().equals(StatusEnum.EVENTO_VINCULADO.getCodigo())){
-                //if(!retorno.getCStat().equals(StatusEnum.EVENTO_VINCULADO)){
+            //if(!retorno.getCStat().equals(StatusEnum.EVENTO_VINCULADO)){
                 log.error("Erro ao manifestar Chave: " + chave + ": "+retorno.getCStat()+"-"+retorno.getXMotivo());
             }
         }

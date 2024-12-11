@@ -1,6 +1,7 @@
 package br.com.nazasoftapinfe.entitiy;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ public class Fornecedor implements Serializable {
     @GeneratedValue(generator = "FornecedorSeq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "cnpj_emitente", length = 14, nullable = false, unique = true) // UNIQUE e NOT NULL
+    @Column(name = "cnpj_emitente", length = 14, nullable = false) // UNIQUE e NOT NULL
     private String cnpj;
 
     @Column(name = "nome_emitente", length = 100)
@@ -38,4 +39,9 @@ public class Fornecedor implements Serializable {
     private String xPais;
     private String IE;
     private String crt;
+
+    @ManyToOne
+    @JoinColumn(name="empresa_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Empresa empresa;
 }

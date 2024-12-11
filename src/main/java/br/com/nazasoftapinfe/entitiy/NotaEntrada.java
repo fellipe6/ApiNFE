@@ -39,5 +39,6 @@ public class NotaEntrada {
     private Empresa empresa;
 
     @Column(columnDefinition = "TEXT")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String xmlStr;
 }

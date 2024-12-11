@@ -1,8 +1,11 @@
 package br.com.nazasoftapinfe.service;
 
 import br.com.nazasoftapinfe.entitiy.Fornecedor;
+import br.com.nazasoftapinfe.entitiy.NotaEntrada;
 import br.com.nazasoftapinfe.repository.FornecedorRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FornecedorService {
@@ -11,16 +14,16 @@ public class FornecedorService {
 
     public FornecedorService(FornecedorRepository fornecedorRepository) {
         this.fornecedorRepository = fornecedorRepository;
+
     }
 
-    public Fornecedor cadastrarFornecedor(Fornecedor fornecedor) {
-        // Verifica se o CNPJ já existe
-        fornecedorRepository.findByCnpj(fornecedor.getCnpj())
-                .ifPresent(e -> {
-                    throw new IllegalArgumentException("CNPJ já cadastrado: " + fornecedor.getCnpj());
-                });
+    public void salvar(List<Fornecedor> fornecedor) {
 
-        // Salva a empresa se não existir
-        return fornecedorRepository.save(fornecedor);
+        fornecedorRepository.saveAll(fornecedor);
     }
+
+    public List<Fornecedor> listaFornecedor(){
+        return fornecedorRepository.findAll();
+    }
+
 }
