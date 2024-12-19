@@ -117,22 +117,21 @@ public class DistribuicaoService {
                     Fornecedor fornecedor = new Fornecedor();
                     fornecedor.setEmpresa(empresa);
                     fornecedor.setCnpj(nfe.getNFe().getInfNFe().getEmit().getCNPJ());
-                    fornecedor.setNome(nfe.getNFe().getInfNFe().getEmit().getXNome().toUpperCase());
-                    fornecedor.setLogradouro(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXLgr());
+                    fornecedor.setNome(nfe.getNFe().getInfNFe().getEmit().getXNome().toUpperCase().toUpperCase());
+                    fornecedor.setLogradouro(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXLgr().toUpperCase());
                     fornecedor.setNumero(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getNro());
-                    fornecedor.setXCpl(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXCpl());
-                    fornecedor.setXBairro(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXBairro());
-                    fornecedor.setCMun(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getCMun());
+                    fornecedor.setXCpl(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXCpl()!= null ? nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXCpl().toUpperCase() :"");
+                    fornecedor.setXBairro(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXBairro().toUpperCase());
+                    fornecedor.setCMun(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getCMun().toUpperCase());
                     fornecedor.setXMun(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXMun());
                     fornecedor.setUF(String.valueOf(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getUF()));
                     fornecedor.setCEP(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getCEP());
                     fornecedor.setCPais(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getCPais());
-                    fornecedor.setXPais(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXPais());
+                    fornecedor.setXPais(nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXPais()!= null ? nfe.getNFe().getInfNFe().getEmit().getEnderEmit().getXPais():"1058");
                     fornecedor.setIE(nfe.getNFe().getInfNFe().getEmit().getIE());
                     fornecedor.setCrt(nfe.getNFe().getInfNFe().getEmit().getCRT());
 
                     //produtos
-
                     List<TNFe.InfNFe.Det> det = nfe.getNFe().getInfNFe().getDet();
 
                     if (det != null && !det.isEmpty()) {
@@ -143,7 +142,7 @@ public class DistribuicaoService {
                                 produto.setCEAN(detalhe.getProd().getCEAN());
                                 produto.setChave(nfe.getNFe().getInfNFe().getId().substring(3));
                                 produto.setVProd(new BigDecimal(detalhe.getProd().getVProd())); // Corrigido: campo correto para valor do produto.
-                                produto.setXProd(detalhe.getProd().getXProd());
+                                produto.setXProd(detalhe.getProd().getXProd().toUpperCase());
                                 produto.setCest(detalhe.getProd().getCEST());
                                 produto.setCfop(detalhe.getProd().getCFOP());
                                 produto.setUcom(detalhe.getProd().getUCom());
@@ -151,6 +150,7 @@ public class DistribuicaoService {
                                 produto.setVUnCom(detalhe.getProd().getVUnCom());
                                 produto.setCEANTrib(detalhe.getProd().getCEANTrib());
                                 produto.setUTrib(detalhe.getProd().getUTrib());
+                                produto.setVUnTrib(detalhe.getProd().getVUnTrib());
                                 produto.setQTrib(detalhe.getProd().getQTrib());
                                 produto.setVUnCom(detalhe.getProd().getVUnCom());
                                 produto.setNcm(detalhe.getProd().getNCM());
@@ -179,8 +179,6 @@ public class DistribuicaoService {
                         System.err.println("Lista de detalhes nula ou vazia.");
                     }
 
-                    //produto.setCProd(nfe.getNFe().getInfNFe().getDet().get(0).getProd().getCProd());
-                    //  produto.setCProd(nfe.getVersao());*/
 
                     listasNotasSalvar.add(notaEntrada);
                     listasFornecedor.add(fornecedor);

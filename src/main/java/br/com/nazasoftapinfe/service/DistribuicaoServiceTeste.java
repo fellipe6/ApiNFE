@@ -142,7 +142,7 @@ public class DistribuicaoServiceTeste {
                     if (det != null && !det.isEmpty()) {
                         produto.setCProd(det.get(0).getProd().getCProd());
                         produto.setCEAN(det.get(0).getProd().getCEAN());
-                        produto.setChave(det.get(0).getProd().getCProd());
+                      //  produto.setChave(det.get(0).getProd().getCProd());
                         produto.setXProd(det.get(0).getProd().getXProd());
                         produtoService.salvarProduto(produto);
 

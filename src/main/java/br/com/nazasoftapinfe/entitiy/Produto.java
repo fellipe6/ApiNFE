@@ -1,5 +1,7 @@
 package br.com.nazasoftapinfe.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -73,10 +75,6 @@ public class Produto {
 
     @Column(name = "dVal")
     private String dVal;
-
-
-
-
 
 
 

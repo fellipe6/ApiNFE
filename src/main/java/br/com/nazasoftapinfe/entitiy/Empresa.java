@@ -1,7 +1,7 @@
 package br.com.nazasoftapinfe.entitiy;
 
 import br.com.swconsultoria.nfe.dom.enuns.AmbienteEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -26,8 +26,8 @@ public class Empresa {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private byte[] certificado;
     */
-   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-   private byte[] certificado;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private byte[] certificado;
     private String senhaCertificado;
     private String nsu;
     private String uf;
