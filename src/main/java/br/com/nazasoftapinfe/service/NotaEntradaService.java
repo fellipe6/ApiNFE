@@ -56,6 +56,8 @@ public class NotaEntradaService {
         return notaEntradaRepository.findFirstByChave(chave)
                 .orElseThrow(()-> new IntegracaoException("Nota não encontrada com o chave: " + chave));
     }
-
+    public boolean existeChave(String chave) {
+        return notaEntradaRepository.existsByChave(chave);
+    }
 }
 

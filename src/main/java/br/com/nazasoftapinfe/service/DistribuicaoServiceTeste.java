@@ -117,7 +117,7 @@ public class DistribuicaoServiceTeste {
                     notaEntrada.setSerie(nfe.getNFe().getInfNFe().getIde().getSerie());
                     notaEntrada.setNumeroNota(nfe.getNFe().getInfNFe().getIde().getNNF());
                     notaEntrada.setDtEmit(nfe.getNFe().getInfNFe().getIde().getDhEmi());
-                    notaEntrada.setXmlStr(xml);
+                    //notaEntrada.setXmlStr(xml);
                     notaEntrada.setXml(ArquivoUtil.compactaXml(xml));
                     //fornecedor
                     Fornecedor fornecedor = new Fornecedor();

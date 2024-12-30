@@ -35,5 +35,4 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
         return NoOpPasswordEncoder.getInstance();
     }
 
-
 }

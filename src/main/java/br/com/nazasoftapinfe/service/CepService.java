@@ -19,8 +19,7 @@ public class CepService {
 
         // Fazer a requisição para o ViaCEP
         try {
-            String response = restTemplate.getForObject(url, String.class);
-            return response;
+            return restTemplate.getForObject(url, String.class);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao buscar CEP: " + e.getMessage());
         }

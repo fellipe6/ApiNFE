@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface NotaEntradaRepository extends JpaRepository<NotaEntrada, Long> {
     Optional<NotaEntrada> findFirstByChave(String chave);
+    boolean existsByChave(String chave);
 
 
 }

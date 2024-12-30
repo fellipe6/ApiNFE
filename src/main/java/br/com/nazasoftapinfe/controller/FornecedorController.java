@@ -1,8 +1,10 @@
 package br.com.nazasoftapinfe.controller;
 
 import br.com.nazasoftapinfe.entitiy.Empresa;
+import br.com.nazasoftapinfe.entitiy.LogEntry;
 import br.com.nazasoftapinfe.service.EmpresaService;
 import br.com.nazasoftapinfe.service.FornecedorService;
+import br.com.nazasoftapinfe.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class FornecedorController {
 
     public FornecedorController(FornecedorService fornecedorService) {
         this.fornecedorService = fornecedorService;
+
     }
 
 

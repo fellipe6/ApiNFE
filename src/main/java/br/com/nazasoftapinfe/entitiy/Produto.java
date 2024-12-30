@@ -81,4 +81,6 @@ public class Produto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Empresa empresa;
 
+    private String CNPJDestino;
+
 }
