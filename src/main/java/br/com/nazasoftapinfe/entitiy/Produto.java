@@ -76,6 +76,9 @@ public class Produto {
     @Column(name = "dVal")
     private String dVal;
 
-
+    @ManyToOne
+    @JoinColumn(name="empresa_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Empresa empresa;
 
 }

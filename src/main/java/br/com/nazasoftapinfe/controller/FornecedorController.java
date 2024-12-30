@@ -4,6 +4,7 @@ import br.com.nazasoftapinfe.entitiy.Empresa;
 import br.com.nazasoftapinfe.service.EmpresaService;
 import br.com.nazasoftapinfe.service.FornecedorService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class FornecedorController {
     }
 
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> listarFornecedor() {
         try {
             return ResponseEntity.ok(fornecedorService.listaFornecedor());

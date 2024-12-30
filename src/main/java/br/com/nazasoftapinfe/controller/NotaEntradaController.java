@@ -24,7 +24,7 @@ public class NotaEntradaController {
         this.distribuicaoService = distribuicaoService;
     }
 
-    @GetMapping(value ="consulta")
+    @GetMapping(value ="consulta",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> consulta() {
         try {
             distribuicaoService.consultaNotas();

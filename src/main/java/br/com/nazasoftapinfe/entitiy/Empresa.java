@@ -32,5 +32,8 @@ public class Empresa {
     private String nsu;
     private String uf;
 
-
+    @ManyToOne
+    @JoinColumn(name="empresa_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Empresa empresa;
 }
