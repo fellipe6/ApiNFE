@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 
 
 @Component
-public class BackupService {
+public class BackupManager {
     private final LogService logService;
 
     @Value("${spring.datasource.url}")
@@ -25,7 +25,7 @@ public class BackupService {
     @Value("${spring.datasource.password}")
     private String dbPassword;
 
-    public BackupService(LogService logService) {
+    public BackupManager(LogService logService) {
         this.logService = logService;
     }
 
@@ -91,7 +91,7 @@ public class BackupService {
         }
     }
 
-    private void excluirBackupsAntigos(String backupDirPath) {
+    public void excluirBackupsAntigos(String backupDirPath) {
         try {
             File backupDir = new File(backupDirPath);
             File[] arquivos = backupDir.listFiles();

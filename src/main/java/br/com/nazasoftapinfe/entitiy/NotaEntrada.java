@@ -15,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name="nota_entrada")
+
 @SequenceGenerator(name="NotaEntradaSeq",sequenceName = "SEQ_NOTA_ENTRADA",allocationSize = 1)
 @Data
 public class NotaEntrada implements Serializable {

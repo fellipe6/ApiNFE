@@ -20,7 +20,7 @@ public class AgendadorConsultaNFE {
         this.distribuicaoService = distribuicaoService;
         this.notaEntradaController = notaEntradaController;
     }
-    @Scheduled(initialDelay=1000*60*10,fixedDelay=7200000)//Serviço irá consultar na SEFAZ a cada duas horas
+   // @Scheduled(initialDelay=1000*60*10,fixedDelay=7200000)//Serviço irá consultar na SEFAZ a cada uma hora
     public void efetuaConsulta(){
         try {
             log.info("Iniciando a operação de consultas!");

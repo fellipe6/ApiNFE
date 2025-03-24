@@ -349,7 +349,7 @@ public class DistribuicaoService {
                 "c:/certificado/schemas");
     }
 
-    public void salvarXmlNoServidor(String xml, String chaveNota, String cnpjDestino) {
+   public void salvarXmlNoServidor(String xml, String chaveNota, String cnpjDestino) {
         try {
             if (xml == null || xml.isEmpty()) {
                 log.error("❌ XML está vazio ou nulo.");
@@ -393,4 +393,5 @@ public class DistribuicaoService {
             logService.salvarLog("ERROR", "Erro ao salvar XML da nota: "+ chaveNota  + " Erro:" +  e.getMessage(), String.valueOf(e), null);
         }
     }
+
 }
